@@ -13,8 +13,8 @@ class Players {
 
   getRequest(offset) {
     let url = this.url +'&count=100&offset='+ offset;
-    let response = request('GET', url);
-    let body = JSON.parse(response.getBody());
+    let body = JSON.parse(request('GET', url).getBody());
+    
     if (body.players.length !== 0) {
       return body.players;
     } else {
