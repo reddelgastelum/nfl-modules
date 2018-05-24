@@ -1,8 +1,5 @@
 let Players = require('./modules/Players');
+let Liveupdate = require('./modules/Liveupdate');
 
-let options = {
-  format: 'json'
-};
-
-let players = new Players(options);
-console.log(players.getAll());
+let lu = new Liveupdate('2012020500');
+console.log(lu.getResponse()['2012020500']['home']['stats']);
