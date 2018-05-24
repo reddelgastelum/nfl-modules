@@ -8,13 +8,13 @@ class Players {
     this.format = options.format !== undefined ? options.format : "";
 
     this.url = 'http://api.fantasy.nfl.com/v1/players/editordraftranks?season='+ this.season +'&format='+ this.format;
-
+    this.players = this.getAll();
   }
 
   getRequest(offset) {
     let url = this.url +'&count=100&offset='+ offset;
     let body = JSON.parse(request('GET', url).getBody());
-    
+
     if (body.players.length !== 0) {
       return body.players;
     } else {
@@ -31,6 +31,24 @@ class Players {
         return players;
       } else {
         players = players.concat(response);
+      }
+    }
+  }
+
+  getOne(gsisPlayerId) {
+    let players = this.players;
+    for (let player of players) {
+      if (player.gsisPlayerId === gsisPlayerId) {
+        return player;
+      }
+    }
+  }
+
+  update(gsisPlayerId, category, obj) {
+    let i;
+    for (i = 0; i < this.players.length; i++) {
+      if (this.players[i].gsisPlayerId === gsisPlayerId) {
+        this.players[i][category] = obj;
       }
     }
   }
