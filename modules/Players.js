@@ -8,7 +8,9 @@ class Players {
     this.format = options.format !== undefined ? options.format : "";
 
     this.url = 'http://api.fantasy.nfl.com/v1/players/editordraftranks?season='+ this.season +'&format='+ this.format;
+
     this.players = this.getAll();
+    this.addBlankStats();
   }
 
   getRequest(offset) {
@@ -35,6 +37,21 @@ class Players {
     }
   }
 
+  addBlankStats() {
+    let players = this.players;
+    for (let player of players) {
+      player.passing = { name: '', att: 0, cmp: 0, yds: 0, tds: 0, ints: 0, twopta: 0, twoptm: 0};
+      player.rushing = { name: '', att: 0, yds: 0, tds: 0, lng: 0, lngtd: 0, twopta: 0, twoptm: 0};
+      player.receiving = { name: '', rec: 0, yds: 0, tds: 0, lng: 0, lngtd: 0, twopta: 0, twoptm: 0 };
+      player.fumbles = { name: '', tot: 0, rcv: 0, trcv: 0, yds: 0, lost: 0 };
+      player.kicking = { name: '', fgm: 0, fga: 0, fgyds: 0, totpfg: 0, xpmade: 0, xpmissed: 0, xpa: 0, xpb: 0, xptot: 0 };
+      player.punting = {};
+      player.kickret = { name: '', ret: 0, avg: 0, tds: 0, lng: 0, lngtd: 0 };
+      player.puntret = { name: '', ret: 0, avg: 0, tds: 0, lng: 0, lngtd: 0 };
+      player.defense = { name: '', tkl: 0, ast: 0, sk: 0, int: 0, ffum: 0 };
+    }
+  }
+
   getOne(gsisPlayerId) {
     let players = this.players;
     for (let player of players) {
@@ -51,6 +68,10 @@ class Players {
         this.players[i][category] = obj;
       }
     }
+  }
+
+  getFantasyPoints() {
+    console.log(this.getOne('00-0026143'));
   }
 }
 
