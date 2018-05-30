@@ -9,9 +9,7 @@ let players = new Players({format:'json'});
 // This is a test eid for the liveupdate url
 let eid = '2017123100';
 
-// Create a Liveupdate object and get a response
-let lu = new Liveupdate(eid);
-let p = lu.getStats();
+let p = players.updateAll(eid);
 
 
-console.log(p.players);
+console.log(p);

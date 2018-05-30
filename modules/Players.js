@@ -1,4 +1,5 @@
 let request = require('sync-request');
+let Liveupdate = require('./Liveupdate');
 
 class Players {
   constructor(options) {
@@ -61,13 +62,29 @@ class Players {
     }
   }
 
-  update(gsisPlayerId, category, obj) {
+  updateOne(gsisPlayerId, category, obj) {
     let i;
     for (i = 0; i < this.players.length; i++) {
       if (this.players[i].gsisPlayerId === gsisPlayerId) {
         this.players[i][category] = obj;
       }
     }
+  }
+
+  updateAll(eid) {
+    let liveupdate = new Liveupdate(eid);
+    let stats = liveupdate.getStats();
+    for (let stat of stats) {
+      for (let category in stat) {
+        for (let playerId in stat[category]) {
+          let player = this.getOne(playerId);
+          if (player !== undefined) {
+            this.updateOne(playerId, category, stat[category][playerId]);
+          }
+        }
+      }
+    }
+    return this.players;
   }
 
   getFantasyPoints() {

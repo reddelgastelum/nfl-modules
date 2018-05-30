@@ -16,20 +16,13 @@ class Liveupdate {
 
   getStats() {
     let response = this.getResponse();
-    let players = new Players({format:'json'});
+    let statsArr = [];
     let sides = ['home', 'away'];
     for (let side of sides) {
       let stats = response[this.eid][side]['stats'];
-      for (let category in stats) {
-        for (let playerId in stats[category]) {
-          let player = players.getOne(playerId);
-          if (player !== undefined) {
-            players.update(playerId, category, stats[category][playerId]);
-          }
-        }
-      }
+      statsArr.push(stats);
     }
-    return players;
+    return statsArr;
   }
 }
 
