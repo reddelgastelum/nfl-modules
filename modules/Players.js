@@ -1,5 +1,6 @@
 let request = require('sync-request');
 let Liveupdate = require('./Liveupdate');
+let Scorestrip = require('./Scorestrip');
 
 class Players {
   constructor(options) {
@@ -71,7 +72,7 @@ class Players {
     }
   }
 
-  updateAll(eid) {
+  updateGame(eid) {
     let liveupdate = new Liveupdate(eid);
     let stats = liveupdate.getStats();
     for (let stat of stats) {
@@ -87,8 +88,22 @@ class Players {
     return this.players;
   }
 
-  getFantasyPoints() {
-    console.log(this.getOne('00-0026143'));
+  updateAll() {
+    let scorestrip = new Scorestrip();
+    let eids = scorestrip.getEids();
+    for (let eid of eids) {
+      this.updateGame(eid);
+    }
+    return this.players;
+  }
+
+  getFantasyPoints(options) {
+    let players = this.updateAll();
+    let result = {};
+    for (let player of players) {
+      result[player.gsisPlayerId] = {name: player.firstName + ' ' + player.lastName ,stats: options.passingyds * player.passing.yds};
+    }
+    return result;
   }
 }
 
