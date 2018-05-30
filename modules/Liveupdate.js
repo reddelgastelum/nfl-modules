@@ -20,11 +20,8 @@ class Liveupdate {
     let sides = ['home', 'away'];
     for (let side of sides) {
       let stats = response[this.eid][side]['stats'];
-      let categories = Object.keys(stats);
-      categories.pop();
-      for (let category of categories) {
-        let playerIds = Object.keys(stats[category]);
-        for (let playerId of playerIds) {
+      for (let category in stats) {
+        for (let playerId in stats[category]) {
           let player = players.getOne(playerId);
           if (player !== undefined) {
             players.update(playerId, category, stats[category][playerId]);
